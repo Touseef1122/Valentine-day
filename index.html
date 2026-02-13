@@ -1,0 +1,1508 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>💕 For My Alishbah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #f592b3;
+            --secondary: #fef5f8;
+            --dark: #3b3a3b;
+            --light: #fffafb;
+            --accent: #c51c53;
+        }
+
+        body {
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 50%, #ffe8f0 100%);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Loading Animation */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            transform: scale(1.2);
+            pointer-events: none;
+        }
+
+        .loading-heart {
+            font-size: 120px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .loading-subtext {
+            color: rgba(255,255,255,0.95);
+            font-size: 24px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.2); }
+            20%, 40% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes nameGlow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(245, 87, 108, 0.6), 0 0 30px rgba(245, 87, 108, 0.4), 2px 2px 4px rgba(0,0,0,0.2);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(245, 87, 108, 0.9), 0 0 50px rgba(245, 87, 108, 0.6), 2px 2px 4px rgba(0,0,0,0.2);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Particles */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        /* Main App */
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .app-container.visible {
+            opacity: 1;
+        }
+
+        /* Back Button - Top Left */
+        .back-button {
+            position: fixed;
+            top: max(env(safe-area-inset-top), 20px);
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .back-button.visible {
+            display: flex;
+        }
+
+        .back-button:active {
+            transform: scale(0.9);
+        }
+
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Enhanced Header */
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: max(env(safe-area-inset-top), 30px) 20px 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(244, 114, 182, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+
+        .header .name {
+            font-size: 48px;
+            font-weight: 800;
+            display: block;
+            margin: 15px 0;
+            font-family: 'Playfair Display', serif;
+            animation: nameGlow 2s ease-in-out infinite;
+        }
+
+        .header-subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        /* Music Player */
+        .music-control {
+            position: fixed;
+            top: max(env(safe-area-inset-top), 20px);
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .music-control:active {
+            transform: scale(0.9);
+        }
+
+        .music-control i {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* Card Navigation */
+        .card-navigation {
+            padding: 25px 20px 100px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-card:active {
+            transform: scale(0.95);
+        }
+
+        .nav-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .nav-card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Card Pages */
+        .card-pages-container {
+            display: none;
+            padding: 20px 20px 100px;
+        }
+
+        .card-pages-container.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .card-container {
+            max-width: 420px;
+            height: 620px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.15);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .card-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .card-page.removed {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        .backdrop {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            height: 70%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .card-page h1 {
+            color: white;
+            font-size: 42px;
+            text-align: center;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            line-height: 1.4;
+        }
+
+        .card-title {
+            height: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card-title p {
+            color: var(--dark);
+            font-size: 24px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .next-page {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(244, 114, 182, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+        }
+
+        .btn i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .surprise-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 620px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 24px;
+            padding: 40px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .surprise-div h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+
+        .explore-btn {
+            background: white;
+            color: var(--primary);
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Dancing Script', cursive;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 4px 16px rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .explore-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 20px 20px 100px;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 24px;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 18px;
+        }
+
+        /* Enhanced Memories Section */
+        .memory-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .memory-card:active {
+            transform: scale(0.98);
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+        }
+
+        .memory-content {
+            padding: 25px;
+        }
+
+        .memory-date {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .memory-title {
+            color: var(--dark);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .memory-description {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Reasons Grid */
+        .reasons-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .reason-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.2);
+            animation: slideIn 0.5s ease;
+        }
+
+        .reason-emoji {
+            font-size: 48px;
+            flex-shrink: 0;
+        }
+
+        .reason-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+        /* Promises */
+        .promises-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .promise-item {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 5px solid var(--primary);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.2);
+            animation: slideIn 0.5s ease;
+        }
+
+        .promise-icon {
+            font-size: 36px;
+            flex-shrink: 0;
+        }
+
+        .promise-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        /* Messages */
+        .messages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .message-bottle {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px 20px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-bottle:active {
+            transform: scale(0.95);
+        }
+
+        .bottle-icon {
+            font-size: 56px;
+            margin-bottom: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .bottle-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 20px;
+            opacity: 0;
+            transform: rotateY(90deg);
+            transition: all 0.5s ease;
+        }
+
+        .message-bottle.revealed .bottle-message {
+            opacity: 1;
+            transform: rotateY(0deg);
+        }
+
+        .bottle-text {
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        /* Love Contract Section */
+        .contract-container {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .contract-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--deep-rose);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .contract-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            border-radius: 16px;
+        }
+
+        .thumb-area {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(244, 114, 182, 0.4);
+        }
+
+        .thumb-area.pressing {
+            transform: scale(0.95);
+        }
+
+        .thumb-icon {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+
+        .thumb-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            transition: transform 0.1s linear;
+            opacity: 0;
+        }
+
+        .progress-ring.active {
+            opacity: 1;
+            animation: spin 4s linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .contract-complete {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .contract-complete.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .kiss-animation {
+            font-size: 120px;
+            animation: kissFloat 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes kissFloat {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .complete-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .complete-subtext {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 390px) {
+            .header h1 { font-size: 28px; }
+            .header .name { font-size: 40px; }
+            .loading-text { font-size: 40px; }
+            .card-page h1 { font-size: 36px; }
+            .section-header h2 { font-size: 30px; }
+        }
+
+        /* iPhone 14 Pro Max Specific */
+        @media (width: 430px) and (height: 932px) {
+            .header {
+                padding-top: 50px;
+            }
+            .back-button, .music-control {
+                top: 50px;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s linear;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-heart">💖</div>
+        <div class="loading-text">Happy Valentine's Day!</div>
+        <div class="loading-subtext">I love you so much, Alishbah 💕</div>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Back Button - Top Left -->
+    <div class="back-button" id="backButton">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#f592b3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>For My Beautiful<br><span class="name">Alishbah</span></h1>
+                <p class="header-subtitle">The love of my life, forever and always 💖</p>
+            </div>
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="card-navigation" id="mainNav">
+            <div class="nav-card" data-section="valentine-card">
+                <span class="nav-card-icon">💌</span>
+                <div class="nav-card-title">Valentine Card</div>
+            </div>
+            <div class="nav-card" data-section="memories">
+                <span class="nav-card-icon">📸</span>
+                <div class="nav-card-title">Our Memories</div>
+            </div>
+            <div class="nav-card" data-section="love-reasons">
+                <span class="nav-card-icon">✨</span>
+                <div class="nav-card-title">Why I Love You</div>
+            </div>
+            <div class="nav-card" data-section="promises">
+                <span class="nav-card-icon">🤝</span>
+                <div class="nav-card-title">My Promises</div>
+            </div>
+            <div class="nav-card" data-section="messages">
+                <span class="nav-card-icon">💝</span>
+                <div class="nav-card-title">Love Messages</div>
+            </div>
+            <div class="nav-card" data-section="contract">
+                <span class="nav-card-icon">💕</span>
+                <div class="nav-card-title">Love Contract</div>
+            </div>
+        </div>
+
+        <!-- Valentine Card Section -->
+        <div class="card-pages-container" id="valentine-card">
+            <div class="card-container" id="cardContainer">
+                <div class="card-page cover">
+                    <div class="backdrop">
+                        <h1>Hey You<br>Alishbah 💕</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>You are my favorite human</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page first-page">
+                    <div style="height: 70%; padding: 20px;">
+                        <div class="img-container">
+                            <img src="assets/could-be-us.png" alt="Romantic couple">
+                        </div>
+                    </div>
+                    <div class="card-title">
+                        <p>This could be us, making beautiful memories together 💑</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page second-page">
+                    <div class="backdrop">
+                        <h1>Every moment with you is a treasure I hold close to my heart 💖</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>You make my world complete</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page last-page">
+                    <div class="backdrop">
+                        <h1>Will you be my Valentine?<br>💋</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>Forever and always, Alishbah 💕</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memories Section -->
+        <div class="content-section" id="memories">
+            <div class="section-header">
+                <h2>📸 Our Beautiful Journey</h2>
+                <p>Every moment with you is precious, Alishbah</p>
+            </div>
+            <div class="memory-grid">
+                <div class="memory-card">
+                    <img class="memory-image" src="assets/first-meetup.png" alt="First meeting">
+                    <div class="memory-content">
+                        <div class="memory-date">💕 The Beginning</div>
+                        <div class="memory-title">First Meeting</div>
+                        <div class="memory-description">The moment our eyes met, I knew my life would never be the same. You walked into my life and changed everything.</div>
+                    </div>
+                </div>
+
+                <div class="memory-card">
+                    <img class="memory-image" src="assets/first-date.jpeg" alt="First date">
+                    <div class="memory-content">
+                        <div class="memory-date">🌹 Special Day</div>
+                        <div class="memory-title">Our First Date</div>
+                        <div class="memory-description">Nervous but excited, that perfect evening when we talked for hours. I fell deeper with every word you said.</div>
+                    </div>
+                </div>
+
+                <div class="memory-card">
+                    <img class="memory-image" src="assets/journey.jpeg" alt="Adventures">
+                    <div class="memory-content">
+                        <div class="memory-date">✈️ Adventures</div>
+                        <div class="memory-title">Our Journey Together</div>
+                        <div class="memory-description">Every adventure is better with you by my side. You make ordinary moments extraordinary.</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Why I Love You Section -->
+        <div class="content-section" id="love-reasons">
+            <div class="section-header">
+                <h2>✨ Infinite Reasons I Love You</h2>
+                <p>You're everything I've ever dreamed of and more</p>
+            </div>
+            <div class="reasons-grid">
+                <div class="reason-card">
+                    <div class="reason-emoji">😍</div>
+                    <div class="reason-text">Your beautiful smile lights up my entire world and makes every day brighter</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">💫</div>
+                    <div class="reason-text">The way you make ordinary moments feel absolutely magical</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🌸</div>
+                    <div class="reason-text">Your kindness and gentle heart inspire me to be a better person every day</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">✨</div>
+                    <div class="reason-text">How you believe in me even when I don't believe in myself</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🌈</div>
+                    <div class="reason-text">You bring color and joy into every single day of my life</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">💝</div>
+                    <div class="reason-text">The way you understand me like no one else ever has or ever will</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🦋</div>
+                    <div class="reason-text">You give me butterflies every single time I see you or think of you</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🌟</div>
+                    <div class="reason-text">Your dreams and ambitions make me so incredibly proud to be yours</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">💕</div>
+                    <div class="reason-text">How perfectly imperfect we are together - we complete each other</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🎵</div>
+                    <div class="reason-text">The sound of your laugh is my absolute favorite melody in the world</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">🌹</div>
+                    <div class="reason-text">Your beauty, inside and out, takes my breath away every single time</div>
+                </div>
+                <div class="reason-card">
+                    <div class="reason-emoji">☀️</div>
+                    <div class="reason-text">You're my sunshine even on the darkest and cloudiest days, Alishbah</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Promises Section -->
+        <div class="content-section" id="promises">
+            <div class="section-header">
+                <h2>🤝 My Promises to You, Alishbah</h2>
+                <p>Forever commitments from my heart to yours</p>
+            </div>
+            <div class="promises-list">
+                <div class="promise-item">
+                    <div class="promise-icon">💖</div>
+                    <div class="promise-text">I promise to love you unconditionally, through every season of life, through all ups and downs</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🤗</div>
+                    <div class="promise-text">I promise to be your safe place, your comfort in the most difficult times</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">😊</div>
+                    <div class="promise-text">I promise to make you smile and laugh, even on your hardest days</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🌟</div>
+                    <div class="promise-text">I promise to support your dreams and goals as if they were my own</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">💪</div>
+                    <div class="promise-text">I promise to be your strength when you feel weak and vulnerable</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🎯</div>
+                    <div class="promise-text">I promise to choose you, every single day, for the rest of my life</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🌈</div>
+                    <div class="promise-text">I promise to bring joy, laughter, and happiness into our life together</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">🔒</div>
+                    <div class="promise-text">I promise to protect your heart like the precious treasure it is to me</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">⭐</div>
+                    <div class="promise-text">I promise to never stop trying to be a better person for you</div>
+                </div>
+                <div class="promise-item">
+                    <div class="promise-icon">💝</div>
+                    <div class="promise-text">I promise to love you more tomorrow than I do today, forever growing</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Love Messages Section -->
+        <div class="content-section" id="messages">
+            <div class="section-header">
+                <h2>💝 Love Messages for Alishbah</h2>
+                <p>Tap each bottle to reveal a special message</p>
+            </div>
+            <div class="messages-grid">
+                <div class="message-bottle">
+                    <div class="bottle-icon">💖</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">Alishbah, you're the answer to prayers I didn't even know I had. My soulmate, my everything.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">🌹</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">Every rose I see reminds me of your beauty, your grace, and your perfect soul.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">✨</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">You make me believe in magic, in destiny, in us. You're my miracle, Alishbah.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">🎵</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">You're the song my heart has been singing all along, the melody of my life.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">🌟</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">You shine brighter than all the stars in my universe. You're my guiding light.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">💫</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">Being loved by you is the greatest gift and blessing of my entire life.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">🦋</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">You transformed my life like a beautiful butterfly, bringing color and wonder.</div>
+                    </div>
+                </div>
+                <div class="message-bottle">
+                    <div class="bottle-icon">💝</div>
+                    <div class="bottle-message">
+                        <div class="bottle-text">My heart beats your name with every pulse. You're in every heartbeat, Alishbah.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Love Contract Section -->
+        <div class="content-section" id="contract">
+            <div class="section-header">
+                <h2>💕 Our Love Contract</h2>
+                <p>Seal our forever with your touch</p>
+            </div>
+            
+            <div class="contract-container" id="contractBox">
+                <h3 class="contract-title">Forever Love Agreement 💖</h3>
+                <div class="contract-text">
+                    I, Alishbah, hereby agree to:<br><br>
+                    💕 Love you with all my heart, every single day<br>
+                    💖 Be your partner in all adventures, big and small<br>
+                    💝 Choose you over and over again, forever<br>
+                    💗 Laugh with you, cry with you, grow with you<br>
+                    💞 Make every moment together count<br><br>
+                    This love is eternal, unbreakable, and true. 💑
+                </div>
+
+                <div class="thumb-area" id="thumbArea">
+                    <div class="progress-ring" id="progressRing"></div>
+                    <div class="thumb-icon">👍</div>
+                    <div class="thumb-text">Hold for 4 seconds<br>to sign</div>
+                </div>
+            </div>
+
+            <div class="contract-complete" id="contractComplete">
+                <div class="kiss-animation">💋💕💋</div>
+                <div class="complete-text">Contract Sealed Forever! 🎉</div>
+                <div class="complete-subtext">
+                    Our love is now officially eternal, Alishbah!<br>
+                    You and me, forever and always 💖✨<br><br>
+                    Sealed with love and kisses 💋
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize
+        let soundEnabled = false;
+        let contractSigned = false;
+        
+        // Loading Screen
+        setTimeout(() => {
+            document.getElementById('loadingScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('visible');
+            createConfetti();
+        }, 3000);
+
+        // Particles
+        function initParticles() {
+            const container = document.getElementById('particles');
+            const hearts = ['💕', '💖', '💗', '💝', '💘', '💞', '❤️'];
+            
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(particle);
+            }
+        }
+
+        initParticles();
+
+        // Music Control
+        document.getElementById('musicControl').addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                this.innerHTML = '<i class="fas fa-pause"></i>';
+                alert('🎵 Imagine "Perfect" by Ed Sheeran playing...\n\n"I found a love, for me\nDarling, just dive right in and follow my lead"');
+            } else {
+                this.innerHTML = '<i class="fas fa-music"></i>';
+            }
+            vibrate();
+        });
+
+        // Navigation
+        const sections = ['valentine-card', 'memories', 'love-reasons', 'promises', 'messages', 'contract'];
+        let currentSection = 'home';
+        const backButton = document.getElementById('backButton');
+
+        document.querySelectorAll('.nav-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const section = this.dataset.section;
+                showSection(section);
+            });
+        });
+
+        function showSection(section) {
+            document.getElementById('mainNav').style.display = 'none';
+            sections.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) {
+                    el.classList.remove('active');
+                }
+            });
+            
+            const targetSection = document.getElementById(section);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                currentSection = section;
+            }
+            
+            backButton.classList.add('visible');
+            vibrate();
+        }
+
+        function showHome() {
+            sections.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) {
+                    el.classList.remove('active');
+                }
+            });
+            document.getElementById('mainNav').style.display = 'grid';
+            currentSection = 'home';
+            
+            // Reset valentine card if needed
+            const cardContainer = document.getElementById('cardContainer');
+            if (cardContainer && cardContainer.querySelector('.surprise-div')) {
+                resetValentineCard();
+            }
+            
+            backButton.classList.remove('visible');
+        }
+
+        // Back button click
+        backButton.addEventListener('click', function() {
+            if (currentSection !== 'home') {
+                showHome();
+                vibrate();
+            }
+        });
+
+        // Valentine Card Functionality
+        const btns = document.querySelectorAll('.btn');
+        const cardContainer = document.getElementById('cardContainer');
+        
+        btns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.card-page');
+                card.classList.add('removed');
+                vibrate();
+                createConfetti();
+                
+                setTimeout(() => {
+                    card.remove();
+                    checkChildren();
+                }, 500);
+            });
+        });
+
+        function checkChildren() {
+            if (cardContainer && cardContainer.children.length === 0) {
+                cardContainer.innerHTML = `
+                    <div class="surprise-div">
+                        <h1>Happy Valentine's Day!</h1>
+                        <h1>💖✨💕</h1>
+                        <p style="color: white; font-size: 24px; text-align: center; margin-top: 20px; line-height: 1.6;">
+                            I love you so much, Alishbah!<br>You mean the world to me 💝
+                        </p>
+                        <button class="explore-btn" onclick="showHome()">Explore More Love 💕</button>
+                    </div>
+                `;
+                createConfetti();
+            }
+        }
+
+        function resetValentineCard() {
+            const cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = `
+                <div class="card-page cover">
+                    <div class="backdrop">
+                        <h1>Hey You<br>Alishbah 💕</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>You are my favorite human</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page first-page">
+                    <div style="height: 70%; padding: 20px;">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800" alt="Romantic couple">
+                        </div>
+                    </div>
+                    <div class="card-title">
+                        <p>This could be us, making beautiful memories together 💑</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page second-page">
+                    <div class="backdrop">
+                        <h1>Every moment with you is a treasure I hold close to my heart 💖</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>You make my world complete</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-page last-page">
+                    <div class="backdrop">
+                        <h1>Will you be my Valentine?<br>💋</h1>
+                    </div>
+                    <div class="card-title">
+                        <p>Forever and always, Alishbah 💕</p>
+                    </div>
+                    <div class="next-page">
+                        <button class="btn" type="button">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Re-attach event listeners
+            const newBtns = cardContainer.querySelectorAll('.btn');
+            newBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.card-page');
+                    card.classList.add('removed');
+                    vibrate();
+                    createConfetti();
+                    
+                    setTimeout(() => {
+                        card.remove();
+                        checkChildren();
+                    }, 500);
+                });
+            });
+        }
+
+        // Message Bottles
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.message-bottle')) {
+                const bottle = e.target.closest('.message-bottle');
+                bottle.classList.toggle('revealed');
+                vibrate();
+                createConfetti();
+            }
+        });
+
+        // Love Contract Game
+        const thumbArea = document.getElementById('thumbArea');
+        const progressRing = document.getElementById('progressRing');
+        const contractBox = document.getElementById('contractBox');
+        const contractComplete = document.getElementById('contractComplete');
+        let pressTimer = null;
+        let pressStartTime = 0;
+
+        thumbArea.addEventListener('touchstart', startPress);
+        thumbArea.addEventListener('mousedown', startPress);
+        thumbArea.addEventListener('touchend', endPress);
+        thumbArea.addEventListener('mouseup', endPress);
+        thumbArea.addEventListener('mouseleave', endPress);
+
+        function startPress(e) {
+            e.preventDefault();
+            if (contractSigned) return;
+            
+            thumbArea.classList.add('pressing');
+            progressRing.classList.add('active');
+            pressStartTime = Date.now();
+            vibrate();
+            
+            pressTimer = setTimeout(() => {
+                completeContract();
+            }, 4000);
+        }
+
+        function endPress(e) {
+            e.preventDefault();
+            if (contractSigned) return;
+            
+            thumbArea.classList.remove('pressing');
+            progressRing.classList.remove('active');
+            
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        }
+
+        function completeContract() {
+            contractSigned = true;
+            contractBox.style.display = 'none';
+            contractComplete.classList.add('show');
+            createConfetti();
+            createKisses();
+            vibrate();
+            
+            // Continuous confetti for 3 seconds
+            const confettiInterval = setInterval(() => {
+                createConfetti();
+            }, 300);
+            
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+            }, 3000);
+        }
+
+        function createKisses() {
+            const kisses = ['💋', '💕', '💖', '💗', '💝'];
+            for (let i = 0; i < 30; i++) {
+                const kiss = document.createElement('div');
+                kiss.className = 'confetti';
+                kiss.textContent = kisses[Math.floor(Math.random() * kisses.length)];
+                kiss.style.left = Math.random() * 100 + '%';
+                kiss.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                kiss.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(kiss);
+                
+                setTimeout(() => kiss.remove(), 3000);
+            }
+        }
+
+        // Confetti
+        function createConfetti() {
+            const colors = ['#f093fb', '#f5576c', '#FFB6C1', '#C41E3A', '#ffd700'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function vibrate() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+    </script>
+</body>
+</html>
